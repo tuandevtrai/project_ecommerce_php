@@ -26,6 +26,7 @@ if (isset($_GET['delId'])) {
                     <tr>
                         <th>ID</th>
                         <th>Product Name</th>
+                        <th>Product Quantity</th>
                         <th>Product Price</th>
                         <th>Product Image</th>
                         <th>Category</th>
@@ -47,6 +48,7 @@ if (isset($_GET['delId'])) {
                     <tr class="odd gradeX ">
                         <td><?= $i ?></td>
                         <td><?= $result['productName'] ?></td>
+                        <td><?= $result['productQuantity'] ?></td>
                         <td><?= $fm->format_currency($result['price'])." đ" ?></td>
                         <td><img src="uploads/<?php echo $result['image'] ?>" height="100px" /></td>
                         <td><?= $result['catName'] ?></td>

@@ -42,6 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
                     </tr>
                     <tr>
                         <td>
+                            <label>Quantity</label>
+                        </td>
+                        <td>
+                            <input type="number" name="productQuantity" min="1" value="<?php echo $result_product['productQuantity'] ?>" placeholder="Enter Product Quantity..." class="medium" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <label>Category</label>
                         </td>
                         <td>
