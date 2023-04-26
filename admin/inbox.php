@@ -49,12 +49,10 @@ if (isset($_GET['delId'])) {
 					<tr>
 						<th>No.</th>
 						<th>Order Time</th>
-						<th>Product</th>
-						<th>Quantity</th>
-						<th>Price</th>
-						<th>Customer ID</th>
-						<th>Address</th>
+						<th>Order Code</th>
+						<th>Customer Name</th>
 						<th>Action</th>
+						<th>Status</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -69,17 +67,15 @@ if (isset($_GET['delId'])) {
 					?>
 							<tr class="odd gradeX">
 								<td><?php echo $id; ?></td>
-								<td><?php echo $fm->formatDate($result['date_order'])  ?></td>
-								<td><?php echo $result['productName'] ?></td>
-								<td><?php echo $result['quantity']?></td>
-								<td><?php echo $fm->format_currency($result['price']) . " đ" ?></td>
-								<td><?php echo $result['customerId'] ?></td>
-								<td><a href="customer.php?customerId=<?php echo $result['customerId'] ?>">View Customer</a></td>
+								<td><?php echo $fm->formatDate($result['date_created'])  ?></td>
+								<td><?php echo $result['order_code'] ?></td>
+								<td><?php echo $result['name'] ?></td>
+								<td><a href="customer.php?customerId=<?php echo $result['customer_id'] ?>&order_code=<?php echo $result['order_code'] ?>">View Order</a></td>
 								<td>
 									<?php
 									if ($result['status'] == 0) {
 									?>
-										<a href="?penddingId=<?php echo $result['id'] ?> &price=<?php echo $result['price'] ?>&time=<?php echo $result['date_order'] ?>">Pending...</a>
+										<a href="?penddingId=<?php echo $result['id'] ?> &price=<?php echo $result['price'] ?>&time=<?php echo $result['date_created'] ?>">Pending...</a>
 
 									<?php
 									} else if ($result['status'] == 1) { ?>
@@ -87,7 +83,7 @@ if (isset($_GET['delId'])) {
 									<?php
 									} else {
 									?>
-										<a href="?delId=<?php echo $result['id'] ?> &price=<?php echo $result['price'] ?>&time=<?php echo $result['date_order'] ?>">Remove</a>
+										<a href="?delId=<?php echo $result['id'] ?> &price=<?php echo $result['price'] ?>&time=<?php echo $result['date_created'] ?>">Remove</a>
 									<?php
 									}
 									?>

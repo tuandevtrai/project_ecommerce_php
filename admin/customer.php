@@ -9,9 +9,9 @@ include_once($filepath . '/../helpers/format.php')
 $customer = new customer();
 if (!isset($_GET['customerId']) || $_GET['customerId'] == null) {
     echo "<script>window.location='inbox.php'</script>";
-    
 } else {
     $id = $_GET['customerId'];
+    $order_code = $_GET['order_code'];
 }
 
 
@@ -19,7 +19,7 @@ if (!isset($_GET['customerId']) || $_GET['customerId'] == null) {
 ?>
 <div class="grid_10">
     <div class="box round first grid">
-        <h2>Sửa danh mục</h2>
+        <h2>Chi tiet don hang</h2>
         <div class="block copyblock">
             <?php
             if (isset($updateCat)) {
@@ -31,7 +31,8 @@ if (!isset($_GET['customerId']) || $_GET['customerId'] == null) {
             if ($get_customer) {
                 while ($result = $get_customer->fetch_assoc()) {
             ?>
-                    <form action="?customerId=<?php $result['id']?>" method="post">
+                    <form action="?customerId=<?php $result['id'] ?>" method="post">
+                        <h3>Thông tin người đặt hàng</h3>
                         <table class="form">
                             <tr>
                                 <td>Name</td>
@@ -87,8 +88,47 @@ if (!isset($_GET['customerId']) || $_GET['customerId'] == null) {
             <?php
                 }
             }
+
             ?>
+
         </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Hình ảnh</th>
+                    <th scope="col">Giá sản phẩm</th>
+                    <th scope="col">Số lượng sản phẩm</th>
+                    <th scope="col">Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                $get_order = $customer->show_order($order_code);
+                if ($get_order) {
+                    $subtotal=0;
+                    $total=0;
+                    while ($result_order = $get_order->fetch_assoc()) {
+                        $subTotal=$result_order['quantity'] * $result_order['price'];
+                        $total+=$subTotal;
+                ?>
+                <tr>
+                    <th><?php echo $result_order['productName'] ?></th>
+                    <th><img src="uploads/<?php echo $result_order['image'] ?>"  height="50px"/></th>
+                    <td><?php echo number_format($result_order['price'],0,',','.') ?></td>
+                    <td><?php echo $result_order['quantity'] ?></td>
+                    <td><?php echo number_format($subTotal,0,',','.') ?></td>
+                </tr>
+                
+               <?php
+                    }
+                }
+               ?>
+               <tr>
+                <td colspan="5">Thành tiền:<?php echo number_format($total,0,',','.') ?> </td>
+               </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 <?php include 'inc/footer.php'; ?>

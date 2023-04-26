@@ -81,6 +81,14 @@ class customer
         $result = $this->db->select($query);
         return $result;
     }
+    public function show_order($order_code)
+    {
+
+        $query = "select * from tbl_order
+                where order_code='$order_code'";
+        $result = $this->db->select($query);
+        return $result;
+    }
     public function update_customer($data, $id)
     {
         $name = mysqli_real_escape_string($this->db->link, $data['name']);
@@ -129,5 +137,6 @@ class customer
         $result=$this->db->update($query);
         return $result;
     }
+    
 }
 ?>

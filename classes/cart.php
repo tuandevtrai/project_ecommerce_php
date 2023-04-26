@@ -114,9 +114,16 @@ class cart
     {
         $sId = session_id();
         $query = "select * from tbl_cart
-                where sId='$sId'";
+                where sId='$sId'"; // chon san pham tu don hang theo khach hang
         $get_product = $this->db->select($query);
+
+        $order_code=rand(0000,9999);
+        // insert vao tbl_placed
+        $query_insert="insert into tbl_placed(customer_id,order_code,status)
+                        values('$customer_id','$order_code','0')";
+        $insert_placed=$this->db->insert($query_insert);
         if ($get_product) {
+
             while ($result = $get_product->fetch_assoc()) {
                 $productId = $result['productId'];
                 $productName = $result['productName'];
@@ -125,8 +132,8 @@ class cart
                 $image = $result['image'];
                 $customerId = $customer_id;
 
-                $query_order = "insert into tbl_order(productId,productName,quantity,price,image,customerId)
-                values('$productId','$productName','$quantity','$price','$image','$customerId')";
+                $query_order = "insert into tbl_order(productId,order_code,productName,quantity,price,image,customerId)
+                values('$productId','$order_code','$productName','$quantity','$price','$image','$customerId')";
                 $insert_order = $this->db->insert($query_order);
             }
         }
@@ -177,7 +184,7 @@ class cart
     /** ADMIN */
     public function get_inbox_cart()
     {
-        $query = "select * from tbl_order order by date_order asc ";
+        $query = "select * from tbl_placed,tbl_customer where tbl_placed.customer_id=tbl_customer.id  order by date_created asc ";
         $result = $this->db->select($query);
         return $result;
     }
