@@ -9,8 +9,9 @@ if (isset($_GET['cartId'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 	$cartId = $_POST['cartId'];
+	$productQuantity=$_POST['productQuantity'];
 	$quantity = $_POST['quantity'];
-	$update_quantity_cart = $cart->update_quantity_cart($quantity, $cartId);
+	$update_quantity_cart = $cart->update_quantity_cart($productQuantity,$quantity, $cartId);
 	if ($quantity <= 0) {
 		echo $del_in_cart = $cart->del_in_cart($cartId);
 	}
@@ -36,10 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 				?>
 				<table class="tblone">
 					<tr>
-						<th width="20%">Product Name</th>
+						<th width="10%">Product Name</th>
 						<th width="10%">Image</th>
 						<th width="15%">Price</th>
+						<th width="15%">Product Quantity</th>
 						<th width="25%">Quantity</th>
+						
 						<th width="20%">Total Price</th>
 						<th width="10%">Action</th>
 					</tr>
@@ -54,13 +57,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 								<td><?= $result['productName'] ?></td>
 								<td><img src="./admin/uploads/<?= $result['image'] ?>" alt="" height="100px" /></td>
 								<td><?= $fm->format_currency($result['price']). " đ" ?></td>
+								<td><?php echo $result['productQuantity'] ?></td>
 								<td>
 									<form action="" method="post">
 										<input type="hidden" name="cartId" value="<?= $result['cartId'] ?>" />
+										<input type="hidden" name="productQuantity" value="<?php echo $result['productQuantity'] ?>"/>
 										<input type="number" name="quantity" value="<?php echo $result['quantity'] ?>" min="1" />
 										<input type="submit" name="submit" value="Update" />
 									</form>
 								</td>
+								
 
 								<td><?php $total = $result['price'] * $result['quantity'];
 									echo $fm->format_currency($total) . " đ" ?></td>

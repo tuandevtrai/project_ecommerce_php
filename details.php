@@ -10,7 +10,8 @@ if (!isset($_GET['productId']) || $_GET['productId'] == null) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $quantity = $_POST['quantity'];
-    $addToCart = $cart->add_to_cart($productId, $quantity);
+    $productQuantity=$_POST['productQuantity'];
+    $addToCart = $cart->add_to_cart($productId, $quantity,$productQuantity);
 }
 $customerId = Session::get('customer_id');
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['compare'])) {
@@ -60,14 +61,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['comment_submit'])) {
                                 <p>Price: <span><?= $fm->format_currency($result_details['price']) . " VND" ?></span></p>
                                 <p>Category: <span><?= $result_details['catName'] ?></span></p>
                                 <p>Brand:<span><?= $result_details['brandName'] ?></span></p>
+                                <p>Quantity:<span><?= $result_details['productQuantity'] ?> tồn kho</span></p>
                             </div>
                             <div class="add-cart">
                                 <form action="" method="post">
+                                    <input type="hidden" class="buyfield" name="productQuantity" value="<?php echo $result_details['productQuantity'] ?>" />
                                     <input type="number" class="buyfield" name="quantity" value="1" min="1" />
+                                    <?php
+                                    if($result_details['productQuantity']>0){
+                                    ?>
                                     <input type="submit" class="buysubmit" name="submit" value="Buy Now" />
                                     <?php
+                                    }else{
+                                        
+                                    }
+                                    ?>
+                                    <?php
                                     if (isset($addToCart)) {
-                                        echo '<span style="color:red";font-size:18px>Product already added</span>';
+                                        echo $addToCart;
                                     }
                                     ?>
                                 </form>

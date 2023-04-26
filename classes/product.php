@@ -18,6 +18,7 @@ class product
     public function insert_product($data, $files)
     {
         $productName = mysqli_real_escape_string($this->db->link, $data['productName']);
+        $productQuantity=mysqli_real_escape_string($this->db->link,$data['productQuantity']);
         $brand = mysqli_real_escape_string($this->db->link, $data['brand']);
         $category = mysqli_real_escape_string($this->db->link, $data['category']);
         $productDesc = mysqli_real_escape_string($this->db->link, $data['productDesc']);
@@ -35,13 +36,13 @@ class product
         $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
         $uploaded_image = "uploads/" . $unique_image;
 
-        if ($productName == '' || $brand == '' || $category == '' || $productDesc == '' || $price == '' || $type == '' || $file_name == '') {
+        if ($productName == '' ||$productQuantity == '' || $brand == '' || $category == '' || $productDesc == '' || $price == '' || $type == '' || $file_name == '') {
             $alert = "<span class='error'> Please enter all fields</span>";
             return $alert;
         } else {
             move_uploaded_file($file_temp, $uploaded_image);
-            $query = "insert into tbl_product(productName,brandId,catId,productDesc,price,type,image)
-                    values('$productName','$brand','$category','$productDesc','$price','$type',' $unique_image')";
+            $query = "insert into tbl_product(productName,productQuantity,brandId,catId,productDesc,price,type,image)
+                    values('$productName','$productQuantity','$brand','$category','$productDesc','$price','$type',' $unique_image')";
             $result = $this->db->insert($query);
             if ($result) {
                 $alert = "<span class='success'> Insert product Successfully</span>";
@@ -67,6 +68,7 @@ class product
     public function update_product($data, $files, $id)
     {
         $productName = mysqli_real_escape_string($this->db->link, $data['productName']);
+        $productQuantity=mysqli_real_escape_string($this->db->link,$data['productQuantity']);
         $brand = mysqli_real_escape_string($this->db->link, $data['brand']);
         $category = mysqli_real_escape_string($this->db->link, $data['category']);
         $productDesc = mysqli_real_escape_string($this->db->link, $data['productDesc']);
@@ -84,7 +86,7 @@ class product
         $unique_image = substr(md5(time()), 0, 10) . '.' . $file_ext;
         $uploaded_image = "uploads/" . $unique_image;
 
-        if ($productName == '' || $brand == '' || $category == '' || $productDesc == '' || $price == '' || $type == '') {
+        if ($productName == '' ||$productQuantity == '' || $brand == '' || $category == '' || $productDesc == '' || $price == '' || $type == '') {
             $alert = "<span class='error'> Please enter all fields</span>";
             return $alert;
         } else {
@@ -101,6 +103,7 @@ class product
                 move_uploaded_file($file_temp, $uploaded_image);
                 $query = "update tbl_product set
                   productName='$productName',
+                  productQuantity='$productQuantity',
                   brandId='$brand',
                   catId='$category',
                   productDesc='$productDesc',
@@ -112,6 +115,7 @@ class product
                 // nguoi dung chon anh cu
                 $query = "update tbl_product set
                 productName='$productName',
+                productQuantity='$productQuantity',
                 brandId='$brand',
                 catId='$category',
                 productDesc='$productDesc',
